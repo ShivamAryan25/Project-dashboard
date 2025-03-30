@@ -334,14 +334,20 @@ export default function ProjectTimeline({
       let line: SVGLineElement;
 
       if (!element) {
-        line = document.createElementNS("http://www.w3.org/2000/svg", "line") as SVGLineElement;
+        line = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "line"
+        ) as SVGLineElement;
         line.id = lineId;
         line.setAttribute("stroke", "rgba(255, 255, 255, 0.2)");
         line.setAttribute("stroke-width", "2");
         line.setAttribute("marker-end", "url(#arrowhead)");
         timelineRef.current.appendChild(line);
+      } else if (element instanceof SVGLineElement) {
+        line = element;
       } else {
-        line = element as SVGLineElement;
+        console.error("Element is not an SVGLineElement");
+        return;
       }
 
       line.setAttribute("x1", fromX.toString());
