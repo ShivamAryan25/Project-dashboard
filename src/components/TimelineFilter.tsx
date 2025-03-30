@@ -514,7 +514,7 @@ export default function TimelineFilter({
           <div className="flex justify-end gap-3 mt-4">
             <button
               onClick={() => {
-                const defaultFilters = {
+                const defaultFilters: TimelineFilters = {
                   dateRange: "all",
                   status: "all",
                   sortOrder: "newest-first",
@@ -698,7 +698,7 @@ export default function TimelineFilter({
                 filters.searchQuery) && (
                 <button
                   onClick={() => {
-                    const defaultFilters = {
+                    const defaultFilters: TimelineFilters = {
                       dateRange: "all",
                       status: "all",
                       sortOrder: "newest-first",
