@@ -48,7 +48,13 @@ const generateCalendarTasks = () => {
   ];
 
   // Project-specific tasks
-  const projectTasks = {
+  interface ProjectTask {
+    title: string;
+    duration: number;
+    priority: string;
+  }
+
+  const projectTasks: Record<string, ProjectTask[]> = {
     "1": [
       { title: "Homepage Wireframes", duration: 4, priority: "high" },
       { title: "Navigation Design", duration: 2, priority: "medium" },
