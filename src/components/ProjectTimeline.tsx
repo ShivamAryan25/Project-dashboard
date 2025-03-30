@@ -97,6 +97,7 @@ export default function ProjectTimeline({
           try {
             const fromRect = fromEl.getBoundingClientRect();
             const toRect = toEl.getBoundingClientRect();
+            if (!timelineRef.current) return;
             const timelineRect = timelineRef.current.getBoundingClientRect();
 
             const fromX = 9; // Circle center
