@@ -60,11 +60,12 @@ export default function TimelineComparisonPage() {
   };
 
   // Mock timeline data for projects
-  const getProjectTimeline = (projectId: string) => {
+  const getProjectTimeline = (projectId: string): TimelineStep[] => {
     // Base timelines by project ID
-    const timelines: Record<string, any> = {
+    const timelines: Record<string, TimelineStep[]> = {
       "1": [
         {
+          id: "1-1",
           year: "Dec 2023",
           title: "Website Launch",
           description:

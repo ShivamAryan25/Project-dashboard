@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import DashboardLayout from "@/components/DashboardLayout";
 import ProjectProgressPreview from "@/components/ProjectProgressPreview";
-import TaskList from "@/components/TaskList";
 
 // Same project data as in other pages
 const dummyProjects = [
@@ -365,6 +364,17 @@ const dummyProjects = [
   // Other projects with similar structure
 ];
 
+// Update Contribution type to match the actual data structure
+type Contribution = {
+  id: string;
+  user: string; // This is just a string in the dummy data
+  action: string;
+  date: string;
+  time: string;
+  description?: string;
+  details?: string;
+};
+
 export default function ProjectDetail() {
   const params = useParams();
   const [project, setProject] = useState<(typeof dummyProjects)[0] | null>(
@@ -425,7 +435,7 @@ export default function ProjectDetail() {
   };
 
   // Function to get the appropriate icon based on contribution action
-  const getContributionIcon = (action: string) => {
+  const getContributionIcon = (action: string): ReactNode => {
     if (action.includes("Completed task")) {
       return (
         <svg
@@ -519,7 +529,7 @@ export default function ProjectDetail() {
   };
 
   // Function to sort and filter contributions
-  const getSortedAndFilteredContributions = () => {
+  const getSortedAndFilteredContributions = (): Contribution[] => {
     if (!project?.contributions) return [];
 
     // First filter
@@ -590,9 +600,8 @@ export default function ProjectDetail() {
     ];
   };
 
-  // Function to parse timeline stats from project data
+  // Function to parse timeline data for chart display
   const getTimelineStats = (projectData: (typeof dummyProjects)[0]) => {
-    // Replace any with proper type
     return {
       completed: 3,
       inProgress: 1,
@@ -602,9 +611,8 @@ export default function ProjectDetail() {
     };
   };
 
-  // Function to get project activity data
-  const getActivityData = (projectData: (typeof dummyProjects)[0]) => {
-    // Replace any with proper type
+  // Function to get activity data for charts
+  const getActivityData = () => {
     return [
       { date: "Mon", commits: 5 },
       { date: "Tue", commits: 8 },
