@@ -330,15 +330,18 @@ export default function ProjectTimeline({
 
       // Create or update the line
       const lineId = `line-${stepId}-${e.currentTarget.id}`;
-      let line = document.getElementById(lineId) as SVGLineElement;
+      const element = document.getElementById(lineId);
+      let line: SVGLineElement;
 
-      if (!line) {
-        line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      if (!element) {
+        line = document.createElementNS("http://www.w3.org/2000/svg", "line") as SVGLineElement;
         line.id = lineId;
         line.setAttribute("stroke", "rgba(255, 255, 255, 0.2)");
         line.setAttribute("stroke-width", "2");
         line.setAttribute("marker-end", "url(#arrowhead)");
         timelineRef.current.appendChild(line);
+      } else {
+        line = element as SVGLineElement;
       }
 
       line.setAttribute("x1", fromX.toString());

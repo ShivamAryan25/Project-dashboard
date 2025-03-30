@@ -8,6 +8,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import ProjectProgressPreview from "@/components/ProjectProgressPreview";
 import ProjectTimeline, { TimelineStep } from "@/components/ProjectTimeline";
 import TimelineFilter, { TimelineFilters } from "@/components/TimelineFilter";
+import React from "react";
 
 // Same project data as in other pages
 const dummyProjects = [
@@ -378,7 +379,7 @@ type Contribution = {
 };
 
 // Modified Task type for the rendering
-type Task = {
+type TaskSimple = {
   id: string;
   title: string;
   completed: boolean;
@@ -387,23 +388,56 @@ type Task = {
 };
 
 // Define types for timeline steps
-type Assignee = {
+type AssigneeSimple = {
   id: string;
   name: string;
 };
 
-type Deliverable = {
+type DeliverableSimple = {
   title: string;
   completed: boolean;
 };
 
-type Activity = {
+type ActivitySimple = {
   id: string;
   type: string;
   description: string;
   timestamp: string;
   user: string;
 };
+
+// Define types to replace any
+interface Assignee {
+  id: string;
+  name: string;
+  avatar: string;
+}
+
+interface Deliverable {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
+interface Activity {
+  id: string;
+  type: string;
+  user: {
+    name: string;
+    avatar: string;
+  };
+  timestamp: string;
+  content: string;
+}
+
+interface Task {
+  id: string;
+  title: string;
+  status: string;
+  priority: string;
+  dueDate?: string;
+  assignee?: Assignee;
+}
 
 export default function ProjectDetail() {
   const params = useParams();
@@ -631,44 +665,14 @@ export default function ProjectDetail() {
   };
 
   // Function to get activity data for charts
-  const getActivityData = () => {
-    return [
-      { date: "Mon", commits: 5 },
-      { date: "Tue", commits: 8 },
-      { date: "Wed", commits: 12 },
-      { date: "Thu", commits: 7 },
-      { date: "Fri", commits: 10 },
-      { date: "Sat", commits: 5 },
-      { date: "Sun", commits: 3 },
-    ];
-  };
+  // const getActivityData = () => {
+  //   // Implementation
+  // };
 
   // Remove unused functions
-  const getTimelineStats = (timelineData: string) => {
-    try {
-      const parsedData = JSON.parse(timelineData);
-      return {
-        totalSteps: parsedData.length,
-        completedSteps: parsedData.filter(
-          (step: { status: string }) => step.status === "completed"
-        ).length,
-        inProgressSteps: parsedData.filter(
-          (step: { status: string }) => step.status === "in-progress"
-        ).length,
-        upcomingSteps: parsedData.filter(
-          (step: { status: string }) => step.status === "upcoming"
-        ).length,
-      };
-    } catch (error) {
-      console.error("Error parsing timeline data:", error);
-      return {
-        totalSteps: 0,
-        completedSteps: 0,
-        inProgressSteps: 0,
-        upcomingSteps: 0,
-      };
-    }
-  };
+  // const getTimelineStats = (timelineData: string) => {
+  //   // Implementation
+  // };
 
   // Fix any types
   const handleTimelineUpdate = (updatedStep: TimelineStep) => {
@@ -954,84 +958,76 @@ export default function ProjectDetail() {
                   </button>
                 </div>
 
-                <div className="space-y-3">
-                  {project.tasks.map((task: Task) => (
-                    <div
-                      key={task.id}
-                      className="flex items-center p-4 border border-white/10 bg-white/5 rounded-xl hover:bg-white/10 transition-colors group"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={task.completed}
-                        readOnly
-                        className="w-5 h-5 rounded-md accent-pink-500 bg-white/5 border-white/20 cursor-pointer mr-3"
-                      />
-                      <div className="flex-grow">
-                        <p
-                          className={`font-medium ${
-                            task.completed
-                              ? "line-through text-white/40"
-                              : "text-white"
-                          }`}
-                        >
-                          {task.title}
-                        </p>
-                        <div className="flex items-center mt-1">
-                          <span className="text-xs text-white/60 mr-3">
-                            Due: {task.dueDate}
-                          </span>
-                          <div className="flex items-center">
-                            <span className="text-xs text-white/60 mr-2">
-                              Assigned to:
-                            </span>
-                            <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-violet-500 flex items-center justify-center text-white text-xs font-semibold mr-1">
-                              {task.assignedTo
-                                .split(" ")
-                                .map((n: string) => n[0])
-                                .join("")}
+                {/* Tasks section */}
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold text-white mb-4">
+                    Current Tasks
+                  </h3>
+                  {project.tasks && project.tasks.length > 0 ? (
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <div className="space-y-2">
+                        {project.tasks.map((task) => (
+                          <div
+                            key={task.id}
+                            className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={`w-5 h-5 rounded-md flex items-center justify-center ${
+                                  task.completed
+                                    ? "bg-green-500/20 text-green-300"
+                                    : "bg-blue-500/20 text-blue-300"
+                                }`}
+                              >
+                                {task.completed ? (
+                                  <svg
+                                    className="w-3.5 h-3.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
+                                ) : (
+                                  <svg
+                                    className="w-3.5 h-3.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                    />
+                                  </svg>
+                                )}
+                              </div>
+                              <span className="text-white">{task.title}</span>
                             </div>
-                            <span className="text-xs text-white/60">
-                              {task.assignedTo}
-                            </span>
+                            <div className="flex items-center gap-4">
+                              <span className="text-white/60 text-sm">
+                                {task.dueDate}
+                              </span>
+                              <span className="text-white/80 text-sm bg-white/10 px-2 py-1 rounded-md">
+                                {task.assignedTo}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                            ></path>
-                          </svg>
-                        </button>
-                        <button className="p-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            ></path>
-                          </svg>
-                        </button>
+                        ))}
                       </div>
                     </div>
-                  ))}
+                  ) : (
+                    <div className="bg-white/5 rounded-xl p-6 border border-white/10 text-center">
+                      <p className="text-white/60">No tasks assigned yet</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
