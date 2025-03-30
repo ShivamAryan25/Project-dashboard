@@ -447,20 +447,12 @@ export default function Home() {
                       className={`px-3 py-1 rounded-lg text-xs font-medium ${
                         project.status === "completed"
                           ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                          : project.status === "in-progress"
-                          ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
-                          : project.status === "delayed"
-                          ? "bg-red-500/20 text-red-300 border border-red-500/30"
-                          : "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
+                          : "bg-blue-500/20 text-blue-300 border border-blue-500/30"
                       }`}
                     >
                       {project.status === "in-progress"
                         ? "In Progress"
-                        : project.status === "completed"
-                        ? "Completed"
-                        : project.status === "delayed"
-                        ? "Delayed"
-                        : "On Hold"}
+                        : "Completed"}
                     </div>
                     <svg
                       className="w-4 h-4 text-white/70"
