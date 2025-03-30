@@ -194,7 +194,9 @@ export default function Home() {
       case "completed":
         return dummyProjects.filter((p) => p.status === "completed");
       case "upcoming":
-        return dummyProjects.filter((p) => p.status === "not-started");
+        return dummyProjects.filter(
+          (p) => p.status !== "in-progress" && p.status !== "completed"
+        );
       case "team":
         if (selectedTeamMember && teamMembers[selectedTeamMember]) {
           return teamMembers[selectedTeamMember].projects;
