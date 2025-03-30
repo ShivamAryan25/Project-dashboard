@@ -309,6 +309,44 @@ export default function ProjectTimeline({
     );
   };
 
+  // Handle step drag & drop
+  const handleStepDrag = (stepId: string, e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const fromEl = document.getElementById(`step-${stepId}`);
+    const toEl = document.getElementById(`step-${e.currentTarget.id}`);
+
+    if (fromEl && toEl && timelineRef.current) {
+      const fromRect = fromEl.getBoundingClientRect();
+      const toRect = toEl.getBoundingClientRect();
+      const timelineRect = timelineRef.current.getBoundingClientRect();
+
+      const fromX = 9; // Circle center
+      const fromY = fromRect.top - timelineRect.top + fromRect.height / 2;
+      const toX = 9; // Circle center
+      const toY = toRect.top - timelineRect.top + toRect.height / 2;
+
+      // Create or update the line
+      const lineId = `line-${stepId}-${e.currentTarget.id}`;
+      let line = document.getElementById(lineId) as SVGLineElement;
+
+      if (!line) {
+        line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.id = lineId;
+        line.setAttribute("stroke", "rgba(255, 255, 255, 0.2)");
+        line.setAttribute("stroke-width", "2");
+        line.setAttribute("marker-end", "url(#arrowhead)");
+        timelineRef.current.appendChild(line);
+      }
+
+      line.setAttribute("x1", fromX.toString());
+      line.setAttribute("y1", fromY.toString());
+      line.setAttribute("x2", toX.toString());
+      line.setAttribute("y2", toY.toString());
+    }
+  };
+
   return (
     <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/10 relative">
       <div className="flex justify-between items-center mb-8">
