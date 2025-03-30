@@ -153,20 +153,18 @@ export default function ProjectTimeline({
   // Toggle a specific step - handle this first
   const toggleStepExpansion = useCallback(
     (index: number) => {
-      if (expandedStep === index) {
-        setExpandedStep(null);
-      } else {
-        setExpandedStep(index);
-
-        // After expansion, update connections if needed
-        if (showDependencies && connectionsVisible && timelineRef.current) {
-          requestAnimationFrame(() => {
-            updateConnectionPaths();
-          });
-        }
+      setExpandedStep(expandedStep === index ? null : index);
+      if (showDependencies && connectionsVisible && timelineRef.current) {
+        updateConnectionPaths();
       }
     },
-    [showDependencies, connectionsVisible, expandedStep, updateConnectionPaths]
+    [
+      expandedStep,
+      showDependencies,
+      connectionsVisible,
+      timelineRef,
+      updateConnectionPaths,
+    ]
   );
 
   // Use layout effect to update connections when dependencies change

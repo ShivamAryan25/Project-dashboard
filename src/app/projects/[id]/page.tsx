@@ -375,6 +375,15 @@ type Contribution = {
   details?: string;
 };
 
+// Modified Task type for the rendering
+type Task = {
+  id: string;
+  title: string;
+  completed: boolean;
+  dueDate: string;
+  assignedTo: string;
+};
+
 export default function ProjectDetail() {
   const params = useParams();
   const [project, setProject] = useState<(typeof dummyProjects)[0] | null>(
@@ -896,7 +905,7 @@ export default function ProjectDetail() {
                 </div>
 
                 <div className="space-y-3">
-                  {project.tasks.map((task: any) => (
+                  {project.tasks.map((task: Task) => (
                     <div
                       key={task.id}
                       className="flex items-center p-4 border border-white/10 bg-white/5 rounded-xl hover:bg-white/10 transition-colors group"
