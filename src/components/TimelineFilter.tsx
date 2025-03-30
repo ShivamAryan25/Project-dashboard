@@ -517,7 +517,7 @@ export default function TimelineFilter({
                 const defaultFilters = {
                   dateRange: "all",
                   status: "all",
-                  sortOrder: "newest",
+                  sortOrder: "newest-first",
                   groupBy: "none",
                   assignees: [],
                   tags: [],
@@ -701,8 +701,8 @@ export default function TimelineFilter({
                     const defaultFilters = {
                       dateRange: "all",
                       status: "all",
-                      sortOrder: filters.sortOrder,
-                      groupBy: filters.groupBy,
+                      sortOrder: "newest-first",
+                      groupBy: "none",
                       assignees: [],
                       tags: [],
                       searchQuery: "",
