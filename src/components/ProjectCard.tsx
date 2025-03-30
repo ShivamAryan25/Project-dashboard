@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface ProjectCardProps {
   id: string;
@@ -112,9 +113,11 @@ export default function ProjectCard({
                 title={member.name}
               >
                 {member.avatar ? (
-                  <img
+                  <Image
                     src={member.avatar}
                     alt={member.name}
+                    width={32}
+                    height={32}
                     className="w-full h-full object-cover"
                   />
                 ) : (

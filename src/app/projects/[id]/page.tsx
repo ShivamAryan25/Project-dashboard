@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import DashboardLayout from "@/components/DashboardLayout";
 import ProjectProgressPreview from "@/components/ProjectProgressPreview";
+import TaskList from "@/components/TaskList";
 
 // Same project data as in other pages
 const dummyProjects = [
@@ -370,7 +372,6 @@ export default function ProjectDetail() {
   );
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
-  const [taskFilter, setTaskFilter] = useState("all");
   const [selectedContribution, setSelectedContribution] = useState<
     string | null
   >(null);
@@ -501,7 +502,7 @@ export default function ProjectDetail() {
   };
 
   // Function to get the background color for contribution icon container
-  const getContributionIconBg = (action: string) => {
+  const getContributionIconBg = (action: string): string => {
     if (action.includes("Completed task")) {
       return "bg-green-500/20";
     } else if (
@@ -586,6 +587,32 @@ export default function ProjectDetail() {
         completedAt:
           projectData.progress === 100 ? projectData.dueDate : undefined,
       },
+    ];
+  };
+
+  // Function to parse timeline stats from project data
+  const getTimelineStats = (projectData: (typeof dummyProjects)[0]) => {
+    // Replace any with proper type
+    return {
+      completed: 3,
+      inProgress: 1,
+      upcoming: 1,
+      total: 5,
+      progressPercentage: projectData.progress,
+    };
+  };
+
+  // Function to get project activity data
+  const getActivityData = (projectData: (typeof dummyProjects)[0]) => {
+    // Replace any with proper type
+    return [
+      { date: "Mon", commits: 5 },
+      { date: "Tue", commits: 8 },
+      { date: "Wed", commits: 12 },
+      { date: "Thu", commits: 7 },
+      { date: "Fri", commits: 10 },
+      { date: "Sat", commits: 5 },
+      { date: "Sun", commits: 3 },
     ];
   };
 
@@ -975,10 +1002,12 @@ export default function ProjectDetail() {
                     >
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-violet-500 flex items-center justify-center text-white font-semibold mr-4">
                         {member.avatar ? (
-                          <img
+                          <Image
                             src={member.avatar}
                             alt={member.name}
-                            className="w-full h-full rounded-full object-cover"
+                            width={32}
+                            height={32}
+                            className="rounded-full"
                           />
                         ) : (
                           member.name

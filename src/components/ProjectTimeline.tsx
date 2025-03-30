@@ -150,7 +150,7 @@ export default function ProjectTimeline({
     setConnectionPaths(paths);
   }, [showDependencies, connectionsVisible, hoveredStep, steps]);
 
-  // Toggle a specific step - defined after updateConnectionPaths
+  // Toggle a specific step - handle this first
   const toggleStepExpansion = useCallback(
     (index: number) => {
       if (expandedStep === index) {

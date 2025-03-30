@@ -1,41 +1,50 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import ProjectTimeline from "@/components/ProjectTimeline";
 import Link from "next/link";
 
-type TimelineStep = {
+// Define types
+interface TimelineStep {
+  id: string;
   year: string;
   title: string;
   description: string;
-  status: "completed" | "in-progress" | "upcoming";
   color: string;
-};
+  status: "completed" | "in-progress" | "upcoming";
+  dependencies?: string[];
+  completionDate?: string;
+}
 
-type ProjectTimelineData = {
-  timeline: TimelineStep[];
+interface Project {
+  id: string;
   name: string;
-};
+}
+
+interface ProjectData {
+  name: string;
+  timeline: TimelineStep[];
+}
 
 export default function TimelineComparisonPage() {
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([
-    "1",
-    "2",
-  ]);
-  const [projectData, setProjectData] = useState<
-    Record<string, ProjectTimelineData>
-  >({});
-  const [loading, setLoading] = useState(true);
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const [projectData, setProjectData] = useState<Record<string, ProjectData>>(
+    {}
+  );
+  const [loading, setLoading] = useState(false);
 
-  // Mock project data
-  const availableProjects = [
-    { id: "1", name: "Website Redesign" },
-    { id: "2", name: "Mobile App Development" },
-    { id: "3", name: "Marketing Campaign" },
-    { id: "4", name: "E-commerce Platform" },
-    { id: "5", name: "Product Launch" },
-  ];
+  // Wrap availableProjects in useMemo to avoid dependency changes
+  const availableProjects = useMemo<Project[]>(
+    () => [
+      { id: "1", name: "Website Redesign" },
+      { id: "2", name: "Mobile App" },
+      { id: "3", name: "Marketing Campaign" },
+      { id: "4", name: "E-commerce Platform" },
+      { id: "5", name: "Product Launch" },
+    ],
+    []
+  );
 
   // Function to toggle project selection
   const toggleProjectSelection = (projectId: string) => {
@@ -272,7 +281,7 @@ export default function TimelineComparisonPage() {
     // Simulate API loading
     setLoading(true);
 
-    const data: Record<string, ProjectTimelineData> = {};
+    const data: Record<string, ProjectData> = {};
 
     // Process selected projects
     selectedProjects.forEach((projectId) => {
