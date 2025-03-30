@@ -61,23 +61,6 @@ export default function ProjectTimeline({
     return () => clearTimeout(timer);
   }, []);
 
-  // Simple ref callback that doesn't trigger state updates
-  const setStepRef = useCallback(
-    (index: number) => (ref: HTMLDivElement | null) => {
-      if (stepRefsRef.current[index] !== ref) {
-        stepRefsRef.current[index] = ref;
-
-        // Force update connections if all refs are set and we're showing dependencies
-        if (showDependencies && connectionsVisible && timelineRef.current) {
-          requestAnimationFrame(() => {
-            updateConnectionPaths();
-          });
-        }
-      }
-    },
-    [showDependencies, connectionsVisible, updateConnectionPaths]
-  );
-
   // Function to update connection paths - declare first
   const updateConnectionPaths = useCallback(() => {
     if (!showDependencies || !connectionsVisible || !timelineRef.current) {
@@ -150,6 +133,23 @@ export default function ProjectTimeline({
 
     setConnectionPaths(paths);
   }, [showDependencies, connectionsVisible, hoveredStep, steps]);
+
+  // Simple ref callback that doesn't trigger state updates
+  const setStepRef = useCallback(
+    (index: number) => (ref: HTMLDivElement | null) => {
+      if (stepRefsRef.current[index] !== ref) {
+        stepRefsRef.current[index] = ref;
+
+        // Force update connections if all refs are set and we're showing dependencies
+        if (showDependencies && connectionsVisible && timelineRef.current) {
+          requestAnimationFrame(() => {
+            updateConnectionPaths();
+          });
+        }
+      }
+    },
+    [showDependencies, connectionsVisible, updateConnectionPaths]
+  );
 
   // Toggle a specific step - handle this first
   const toggleStepExpansion = useCallback(
