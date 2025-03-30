@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import ProjectTimeline from "@/components/ProjectTimeline";
+import ProjectTimeline, { TimelineStep } from "@/components/ProjectTimeline";
 import TimelineFilter, { TimelineFilters } from "@/components/TimelineFilter";
 
 // Define types for timeline steps
@@ -14,20 +14,6 @@ type Assignee = {
 type Deliverable = {
   title: string;
   completed: boolean;
-};
-
-type TimelineStep = {
-  id: string;
-  year: string;
-  title: string;
-  description: string;
-  color: string;
-  status?: "completed" | "in-progress" | "upcoming";
-  dependencies?: string[];
-  completionDate?: string;
-  assignees?: Assignee[];
-  deliverables?: Deliverable[];
-  tags?: string[];
 };
 
 export default function ProjectTimelinePage() {
@@ -273,21 +259,19 @@ export default function ProjectTimelinePage() {
   };
 
   // Handle step update from drag & drop
-  const handleStepUpdate = (updatedStep: {
-    id: string;
-    year: string;
-    title: string;
-    description: string;
-    color: string;
-    status?: "completed" | "in-progress" | "upcoming";
-    dependencies?: string[];
-    completionDate?: string;
-    assignees?: { id: string; name: string }[];
-    deliverables?: { title: string; completed: boolean }[];
-    tags?: string[];
-  }) => {
-    console.log("Step updated:", updatedStep);
-    // Here you would typically update the step in your data store
+  const handleStepUpdate = (updatedStep: TimelineStep) => {
+    if (!updatedStep.id) return; // Guard clause for undefined id
+
+    setTimelineSteps((prevSteps) =>
+      prevSteps.map((step) =>
+        step.id === updatedStep.id
+          ? {
+              ...step,
+              ...updatedStep,
+            }
+          : step
+      )
+    );
   };
 
   return (

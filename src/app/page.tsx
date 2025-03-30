@@ -640,7 +640,7 @@ export default function Home() {
         <div>
           <TaskList tasks={dummyTasks} title="Recent Tasks" />
         </div>
-      </div>
+    </div>
     </DashboardLayout>
   );
 }

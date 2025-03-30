@@ -8,7 +8,7 @@ import React, {
   useLayoutEffect,
 } from "react";
 
-type TimelineStep = {
+export type TimelineStep = {
   id?: string; // Added ID for tracking dependencies
   year: string;
   title: string;
@@ -20,6 +20,7 @@ type TimelineStep = {
   completionDate?: string; // Optional exact completion date
   assignees?: { id: string; name: string }[]; // People assigned to this step
   deliverables?: { title: string; completed: boolean }[]; // Deliverables for this step
+  tags?: string[]; // Optional tags for categorization
 };
 
 type ProjectTimelineProps = {

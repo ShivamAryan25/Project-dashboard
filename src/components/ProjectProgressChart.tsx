@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler,
+  ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useState } from "react";
@@ -21,18 +21,17 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend,
-  Filler
+  Legend
 );
 
-interface ProjectProgress {
+interface Project {
   name: string;
   progress: number;
-  type?: string; // Project type like "Web", "Mobile", "Marketing", etc.
+  type: string;
 }
 
 interface ProjectProgressChartProps {
-  projects: ProjectProgress[];
+  projects: Project[];
   className?: string;
 }
 
@@ -55,7 +54,20 @@ export default function ProjectProgressChart({
       ? projects
       : projects.filter((project) => project.type === selectedType);
 
-  const options = {
+  const data = {
+    labels: filteredProjects.map((project) => project.name),
+    datasets: [
+      {
+        label: "Progress",
+        data: filteredProjects.map((project) => project.progress),
+        borderColor: "rgb(99, 102, 241)",
+        backgroundColor: "rgba(99, 102, 241, 0.5)",
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -66,14 +78,16 @@ export default function ProjectProgressChart({
         display: false,
       },
       tooltip: {
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
         titleColor: "white",
         bodyColor: "white",
-        borderColor: "rgba(255, 255, 255, 0.3)",
-        borderWidth: 1,
-        cornerRadius: 8,
-        displayColors: false,
         padding: 12,
+        displayColors: false,
+        callbacks: {
+          label: function (context) {
+            return `${context.parsed.y}%`;
+          },
+        },
       },
     },
     scales: {
@@ -81,11 +95,13 @@ export default function ProjectProgressChart({
         beginAtZero: true,
         max: 100,
         ticks: {
-          callback: (value: number) => `${value}%`,
+          callback: function (value) {
+            return `${value}%`;
+          },
           color: "rgba(255, 255, 255, 0.7)",
         },
         grid: {
-          display: true,
+          display: false,
           color: "rgba(255, 255, 255, 0.1)",
         },
       },
@@ -99,38 +115,17 @@ export default function ProjectProgressChart({
       },
     },
     elements: {
-      line: {
-        tension: 0.4, // Makes the line curved/wavy
-      },
       point: {
-        radius: 6,
-        hoverRadius: 8,
+        radius: 4,
+        hoverRadius: 6,
+        backgroundColor: "rgb(99, 102, 241)",
+        borderColor: "white",
+        borderWidth: 2,
+      },
+      line: {
+        borderWidth: 2,
       },
     },
-  };
-
-  const data = {
-    labels: filteredProjects.map((project) => project.name),
-    datasets: [
-      {
-        label: "Progress",
-        data: filteredProjects.map((project) => project.progress),
-        borderColor: "rgba(147, 51, 234, 0.8)", // Purple
-        borderWidth: 3,
-        pointBackgroundColor: "rgba(236, 72, 153, 1)", // Pink
-        pointBorderColor: "rgba(255, 255, 255, 0.8)",
-        pointBorderWidth: 2,
-        fill: true,
-        backgroundColor: (context: unknown) => {
-          const ctx = (context as { chart: { ctx: CanvasRenderingContext2D } })
-            .chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-          gradient.addColorStop(0, "rgba(236, 72, 153, 0.5)"); // Pink
-          gradient.addColorStop(1, "rgba(67, 56, 202, 0.05)"); // Indigo
-          return gradient;
-        },
-      },
-    ],
   };
 
   return (
