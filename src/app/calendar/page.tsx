@@ -143,7 +143,7 @@ const generateCalendarTasks = () => {
 
       // Random status (weighted towards in-progress for recent dates)
       let status;
-      const dayDiff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+      const dayDiff = Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 
       if (dayDiff > 7) {
         // Past tasks are likely completed
