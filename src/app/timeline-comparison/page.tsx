@@ -5,17 +5,15 @@ import DashboardLayout from "@/components/DashboardLayout";
 import ProjectTimeline from "@/components/ProjectTimeline";
 import Link from "next/link";
 
-// Define types
-interface TimelineStep {
-  id: string;
+// Type for the timeline
+type TimelineStep = {
+  id?: string;
   year: string;
   title: string;
   description: string;
   color: string;
-  status: "completed" | "in-progress" | "upcoming";
-  dependencies?: string[];
-  completionDate?: string;
-}
+  status?: "completed" | "in-progress" | "upcoming";
+};
 
 interface Project {
   id: string;

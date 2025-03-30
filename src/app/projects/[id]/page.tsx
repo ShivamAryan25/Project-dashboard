@@ -609,17 +609,6 @@ export default function ProjectDetail() {
     ];
   };
 
-  // Function to parse timeline data for chart display
-  const getTimelineStats = (projectData: (typeof dummyProjects)[0]) => {
-    return {
-      completed: 3,
-      inProgress: 1,
-      upcoming: 1,
-      total: 5,
-      progressPercentage: projectData.progress,
-    };
-  };
-
   // Function to get activity data for charts
   const getActivityData = () => {
     return [
@@ -1012,33 +1001,37 @@ export default function ProjectDetail() {
                   </button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {project.team.map((member: any) => (
-                    <div
-                      key={member.id}
-                      className="flex items-center p-4 border border-white/10 bg-white/5 rounded-xl hover:bg-white/10 transition-colors"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-violet-500 flex items-center justify-center text-white font-semibold mr-4">
-                        {member.avatar ? (
-                          <Image
-                            src={member.avatar}
-                            alt={member.name}
-                            width={32}
-                            height={32}
-                            className="rounded-full"
-                          />
-                        ) : (
-                          member.name
-                            .split(" ")
-                            .map((n: string) => n[0])
-                            .join("")
-                        )}
+                  {project.team.map(
+                    (member: { id: string; name: string; avatar: string }) => (
+                      <div
+                        key={member.id}
+                        className="flex items-center p-4 border border-white/10 bg-white/5 rounded-xl hover:bg-white/10 transition-colors"
+                      >
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-violet-500 flex items-center justify-center text-white font-semibold mr-4">
+                          {member.avatar ? (
+                            <Image
+                              src={member.avatar}
+                              alt={member.name}
+                              width={32}
+                              height={32}
+                              className="rounded-full"
+                            />
+                          ) : (
+                            member.name
+                              .split(" ")
+                              .map((n: string) => n[0])
+                              .join("")
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-medium text-white">
+                            {member.name}
+                          </p>
+                          <p className="text-white/60 text-sm">Team Member</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-white">{member.name}</p>
-                        <p className="text-white/60 text-sm">Team Member</p>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
             )}
@@ -1199,7 +1192,7 @@ export default function ProjectDetail() {
                 {getSortedAndFilteredContributions().length > 0 && (
                   <div className="space-y-4">
                     {getSortedAndFilteredContributions().map(
-                      (contribution: any) => (
+                      (contribution: Contribution) => (
                         <div
                           key={contribution.id}
                           className="flex flex-col bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-all cursor-pointer"
