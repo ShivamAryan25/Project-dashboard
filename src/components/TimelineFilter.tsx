@@ -517,7 +517,7 @@ export default function TimelineFilter({
                 const defaultFilters = {
                   dateRange: "all",
                   status: "all",
-                  sortOrder: "newest-first",
+                  sortOrder: "newest",
                   groupBy: "none",
                   assignees: [],
                   tags: [],
