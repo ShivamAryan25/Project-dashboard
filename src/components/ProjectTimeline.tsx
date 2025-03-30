@@ -75,7 +75,7 @@ export default function ProjectTimeline({
         }
       }
     },
-    [showDependencies, connectionsVisible]
+    [showDependencies, connectionsVisible, updateConnectionPaths]
   );
 
   // Function to update connection paths - declare first

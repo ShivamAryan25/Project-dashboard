@@ -6,6 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import DashboardLayout from "@/components/DashboardLayout";
 import ProjectProgressPreview from "@/components/ProjectProgressPreview";
+import ProjectTimeline, { TimelineStep } from "@/components/ProjectTimeline";
+import TimelineFilter, { TimelineFilters } from "@/components/TimelineFilter";
 
 // Same project data as in other pages
 const dummyProjects = [
@@ -384,6 +386,25 @@ type Task = {
   assignedTo: string;
 };
 
+// Define types for timeline steps
+type Assignee = {
+  id: string;
+  name: string;
+};
+
+type Deliverable = {
+  title: string;
+  completed: boolean;
+};
+
+type Activity = {
+  id: string;
+  type: string;
+  description: string;
+  timestamp: string;
+  user: string;
+};
+
 export default function ProjectDetail() {
   const params = useParams();
   const [project, setProject] = useState<(typeof dummyProjects)[0] | null>(
@@ -620,6 +641,46 @@ export default function ProjectDetail() {
       { date: "Sat", commits: 5 },
       { date: "Sun", commits: 3 },
     ];
+  };
+
+  // Remove unused functions
+  const getTimelineStats = (timelineData: string) => {
+    try {
+      const parsedData = JSON.parse(timelineData);
+      return {
+        totalSteps: parsedData.length,
+        completedSteps: parsedData.filter(
+          (step: { status: string }) => step.status === "completed"
+        ).length,
+        inProgressSteps: parsedData.filter(
+          (step: { status: string }) => step.status === "in-progress"
+        ).length,
+        upcomingSteps: parsedData.filter(
+          (step: { status: string }) => step.status === "upcoming"
+        ).length,
+      };
+    } catch (error) {
+      console.error("Error parsing timeline data:", error);
+      return {
+        totalSteps: 0,
+        completedSteps: 0,
+        inProgressSteps: 0,
+        upcomingSteps: 0,
+      };
+    }
+  };
+
+  // Fix any types
+  const handleTimelineUpdate = (updatedStep: TimelineStep) => {
+    // ... existing code ...
+  };
+
+  const handleActivityUpdate = (activity: Activity) => {
+    // ... existing code ...
+  };
+
+  const handleTaskUpdate = (task: Task) => {
+    // ... existing code ...
   };
 
   if (loading) {
