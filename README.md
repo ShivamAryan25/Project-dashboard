@@ -1,37 +1,30 @@
-Project Dashboard
-
-🚀 Live Demo: Project Dashboard
+# Project Dashboard
 
 A modern, responsive dashboard for project management with Next.js, React, and Tailwind CSS.
 
-Features
+# Live Demo
+- **Vercel link**:https://project-dashboard-zeta.vercel.app
 
-Interactive Timeline: Track project progress with interactive, drag-and-drop timelines
+## Features
 
-Project Management: Create, view, and manage projects with detailed statistics
+- **Interactive Timeline**: Track project progress with interactive, drag-and-drop timelines
+- **Project Management**: Create, view, and manage projects with detailed statistics
+- **Calendar View**: Visualize tasks and deadlines with a responsive calendar
+- **Team Management**: Track team members and their contributions
+- **Responsive Design**: Fully responsive design that works on all devices
+- **Dark Mode**: Beautiful dark-mode interface with glass morphism effects
 
-Calendar View: Visualize tasks and deadlines with a responsive calendar
+## Tech Stack
 
-Team Management: Track team members and their contributions
+- **Next.js**: React framework with App Router
+- **React**: UI library
+- **Tailwind CSS**: Utility-first CSS framework
+- **Chart.js**: Interactive charts and visualizations
+- **TypeScript**: Static typing for JavaScript
 
-Responsive Design: Fully responsive design that works on all devices
+## Getting Started
 
-Dark Mode: Beautiful dark-mode interface with glass morphism effects
-
-Tech Stack
-
-Next.js: React framework with App Router
-
-React: UI library
-
-Tailwind CSS: Utility-first CSS framework
-
-Chart.js: Interactive charts and visualizations
-
-TypeScript: Static typing for JavaScript
-
-Getting Started
-
+bash
 # Clone the repository
 git clone https://github.com/yourusername/pdashboard.git
 
@@ -44,18 +37,12 @@ npm install
 # Start the development server
 npm run dev
 
-Open http://localhost:3000 with your browser to see the result.
 
-Screenshots
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Dashboard Overview
+## Screenshots
 
-Project Timeline
-
-Calendar View
-
-Team Page
-
-License
-
-MIT.
+- Dashboard Overview
+- Project Timeline
+- Calendar View
+- Team Page
